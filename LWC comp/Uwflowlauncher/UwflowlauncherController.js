@@ -1,0 +1,37 @@
+({
+    init: function(component, event, helper) {
+        var workspaceAPI = component.find("workspace");
+
+        workspaceAPI.getFocusedTabInfo().then(function(response) {
+            var focusedTabId = response.tabId;
+
+            workspaceAPI.openSubtab({
+                parentTabId: focusedTabId,
+               pageReference: {
+    type: "standard__component",
+    attributes: {
+        componentName: "c__underwritingFlowLWC"
+    },
+    state: {
+        c__loanId: component.get("v.recordId")
+    }
+},
+                focus: true
+            }).then(function(subtabId) {
+                workspaceAPI.setTabLabel({
+                    tabId: subtabId,
+                    label: "Underwriting"
+                });
+                workspaceAPI.setTabIcon({
+                    tabId: subtabId,
+                    icon: "custom:custom45"
+                });
+            }).catch(function(error) {
+                console.error("UWFlowLauncher subtab error: " + JSON.stringify(error));
+            });
+
+        }).catch(function(error) {
+            console.error("UWFlowLauncher tab error: " + JSON.stringify(error));
+        });
+    }
+})

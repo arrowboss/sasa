@@ -1,0 +1,200 @@
+<!-- underwritingFlow.html -->
+<template>
+    <div class="uw-root">
+
+        <!-- CHEVRON NAVIGATION -->
+        <div class="uw-nav-bar">
+            <lightning-progress-indicator current-step={currentStepValue} type="path" has-error="false">
+                <lightning-progress-step label="Analysis"    value="1" data-page="1" onclick={onStepClick}></lightning-progress-step>
+                <lightning-progress-step label="Site Visit"  value="2" data-page="2" onclick={onStepClick}></lightning-progress-step>
+                <lightning-progress-step label="Credit Memo" value="3" data-page="3" onclick={onStepClick}></lightning-progress-step>
+            </lightning-progress-indicator>
+        </div>
+
+        <!-- LOADING — branded skeleton -->
+        <template if:true={isLoading}>
+            <div class="uw-loading-wrap">
+
+                <div class="uw-loading-header">
+                    <div class="uw-loading-icon">
+                        <lightning-icon icon-name="standard:opportunity" size="small"></lightning-icon>
+                    </div>
+                    <div class="uw-loading-title-block">
+                        <span class="uw-loading-title">Underwriting Review</span>
+                        <span class="uw-loading-sub">Loading form data, please wait…</span>
+                    </div>
+                    <lightning-spinner size="small" alternative-text="Loading…" class="uw-inline-spinner"></lightning-spinner>
+                </div>
+
+                <div class="uw-skeleton-list">
+                    <div class="uw-skeleton-card">
+                        <div class="uw-skeleton-card-header"><div class="uw-skel uw-skel--title"></div></div>
+                        <div class="uw-skeleton-card-body">
+                            <div class="uw-skel-row">
+                                <div class="uw-skel uw-skel--field"></div>
+                                <div class="uw-skel uw-skel--field"></div>
+                            </div>
+                            <div class="uw-skel-row">
+                                <div class="uw-skel uw-skel--field"></div>
+                                <div class="uw-skel uw-skel--field uw-skel--short"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uw-skeleton-card">
+                        <div class="uw-skeleton-card-header"><div class="uw-skel uw-skel--title uw-skel--med"></div></div>
+                        <div class="uw-skeleton-card-body">
+                            <div class="uw-skel-row">
+                                <div class="uw-skel uw-skel--field uw-skel--short"></div>
+                                <div class="uw-skel uw-skel--field"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="uw-skeleton-card">
+                        <div class="uw-skeleton-card-header"><div class="uw-skel uw-skel--title uw-skel--long"></div></div>
+                        <div class="uw-skeleton-card-body">
+                            <div class="uw-skel-row">
+                                <div class="uw-skel uw-skel--field"></div>
+                                <div class="uw-skel uw-skel--field"></div>
+                            </div>
+                            <div class="uw-skel-row">
+                                <div class="uw-skel uw-skel--field"></div>
+                                <div class="uw-skel uw-skel--field uw-skel--short"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </template>
+
+        <!-- ERROR -->
+        <template if:true={hasError}>
+            <div class="uw-state-box">
+                <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>{errorMessage}</h2>
+                </div>
+                <lightning-button label="Retry" variant="brand" onclick={onRetry} class="slds-m-top_medium"></lightning-button>
+            </div>
+        </template>
+
+        <!-- FORM -->
+        <template if:true={isReady}>
+            <div class="uw-body slds-p-around_medium">
+                <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+
+                    <template for:each={currentSections} for:item="section">
+                        <lightning-accordion-section
+                            key={section.key}
+                            name={section.key}
+                            label={section.accordionLabel}
+                            class="uw-acc-section">
+
+                            <!-- TYPE A: Employee Demographics -->
+                            <template if:true={section.isEmpDemo}>
+                                <div class="slds-p-around_small">
+                                    <div class="slds-media slds-media_center slds-m-bottom_small">
+                                        <div class="slds-media__figure">
+                                            <lightning-icon icon-name="standard:account" size="small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-media__body">
+                                            <p class="slds-text-title_bold">Employee Demographics</p>
+                                            <p class="slds-text-body_small slds-text-color_weak">For statistical purposes only</p>
+                                        </div>
+                                    </div>
+                                    <template if:true={hasEmpDemoRows}>
+                                        <div style="display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;">
+                                            <table style="min-width:660px;width:100%;border-collapse:collapse;" class="slds-table slds-table_bordered slds-table_col-bordered">
+                                                <thead>
+                                                    <tr style="background:#f4f6f9;">
+                                                        <th style="width:140px;padding:6px 8px;font-size:12px;font-weight:700;color:#16325c;border:1px solid #dddbda;">Race And Ethnicity</th>
+                                                        <th style="width:88px;padding:6px 4px;font-size:12px;font-weight:700;color:#16325c;text-align:center;border:1px solid #dddbda;">Native American</th>
+                                                        <th style="width:88px;padding:6px 4px;font-size:12px;font-weight:700;color:#16325c;text-align:center;border:1px solid #dddbda;">Asian / Pacific Islander</th>
+                                                        <th style="width:88px;padding:6px 4px;font-size:12px;font-weight:700;color:#16325c;text-align:center;border:1px solid #dddbda;">Caucasian</th>
+                                                        <th style="width:88px;padding:6px 4px;font-size:12px;font-weight:700;color:#16325c;text-align:center;border:1px solid #dddbda;">African American</th>
+                                                        <th style="width:88px;padding:6px 4px;font-size:12px;font-weight:700;color:#16325c;text-align:center;border:1px solid #dddbda;">Latinx</th>
+                                                        <th style="width:80px;padding:6px 4px;font-size:12px;font-weight:700;color:#16325c;text-align:center;border:1px solid #dddbda;">Other</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={empDemoRows} for:item="row" for:index="idx">
+                                                        <tr key={row.Id} class="slds-hint-parent">
+                                                            <td style="padding:4px 8px;font-size:13px;border:1px solid #dddbda;white-space:nowrap;">{row.Race_And_Ethinicity__c}</td>
+                                                            <td style="padding:2px;border:1px solid #dddbda;"><lightning-input type="number" variant="label-hidden" label="Native American" name="nativeAmerican" value={row.Native_American__c} onchange={onEmpDemoChange} data-id={idx}></lightning-input></td>
+                                                            <td style="padding:2px;border:1px solid #dddbda;"><lightning-input type="number" variant="label-hidden" label="Asian/Pacific Islander" name="pacificIslander" value={row.Asian_Pacific_Islander__c} onchange={onEmpDemoChange} data-id={idx}></lightning-input></td>
+                                                            <td style="padding:2px;border:1px solid #dddbda;"><lightning-input type="number" variant="label-hidden" label="Caucasian" name="caucasian" value={row.Caucasian__c} onchange={onEmpDemoChange} data-id={idx}></lightning-input></td>
+                                                            <td style="padding:2px;border:1px solid #dddbda;"><lightning-input type="number" variant="label-hidden" label="African American" name="africanAmerican" value={row.African_American__c} onchange={onEmpDemoChange} data-id={idx}></lightning-input></td>
+                                                            <td style="padding:2px;border:1px solid #dddbda;"><lightning-input type="number" variant="label-hidden" label="Latinx" name="latinx" value={row.Latinx__c} onchange={onEmpDemoChange} data-id={idx}></lightning-input></td>
+                                                            <td style="padding:2px;border:1px solid #dddbda;"><lightning-input type="number" variant="label-hidden" label="Other" name="other" value={row.Other__c} onchange={onEmpDemoChange} data-id={idx}></lightning-input></td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </template>
+                                    <template if:false={hasEmpDemoRows}>
+                                        <p class="uw-empty-msg">No Employee Demographics records found for this loan.</p>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <!-- TYPE B: Empty / placeholder -->
+                            <template if:true={section.isEmpty}>
+                                <p class="uw-empty-msg slds-p-around_medium">{section.emptyMsg}</p>
+                            </template>
+
+                            <!-- TYPE C: Field-set grid -->
+                            <template if:true={section.isFieldSet}>
+                                <div class="slds-grid slds-wrap slds-gutters slds-p-around_small">
+                                    <template for:each={section.fields} for:item="field">
+                                        <div key={field.uid} class={field.colCss}>
+                                            <template if:true={field.isText}>
+                                                <lightning-input label={field.label} type={field.inputType} value={field.value} required={field.required} disabled={field.isDisabled} data-obj={field.objectApiName} data-fld={field.apiName} onchange={onFieldChange}></lightning-input>
+                                            </template>
+                                            <template if:true={field.isNumber}>
+                                                <lightning-input label={field.label} type="number" value={field.value} required={field.required} disabled={field.isDisabled} formatter={field.formatter} data-obj={field.objectApiName} data-fld={field.apiName} onchange={onFieldChange}></lightning-input>
+                                            </template>
+                                            <template if:true={field.isBoolean}>
+                                                <lightning-input label={field.label} type="checkbox" checked={field.boolVal} disabled={field.isDisabled} data-obj={field.objectApiName} data-fld={field.apiName} onchange={onCheckbox}></lightning-input>
+                                            </template>
+                                            <template if:true={field.isDate}>
+                                                <lightning-input label={field.label} type="date" value={field.value} required={field.required} disabled={field.isDisabled} data-obj={field.objectApiName} data-fld={field.apiName} onchange={onFieldChange}></lightning-input>
+                                            </template>
+                                            <template if:true={field.isDatetime}>
+                                                <lightning-input label={field.label} type="datetime-local" value={field.value} required={field.required} disabled={field.isDisabled} data-obj={field.objectApiName} data-fld={field.apiName} onchange={onFieldChange}></lightning-input>
+                                            </template>
+                                            <template if:true={field.isTextarea}>
+                                                <lightning-textarea label={field.label} value={field.value} required={field.required} disabled={field.isDisabled} data-obj={field.objectApiName} data-fld={field.apiName} onchange={onFieldChange}></lightning-textarea>
+                                            </template>
+                                            <template if:true={field.isPicklist}>
+                                                <lightning-combobox label={field.label} value={field.value} options={field.picklistOptions} required={field.required} disabled={field.isDisabled} placeholder="— Select —" data-obj={field.objectApiName} data-fld={field.apiName} onchange={onFieldChange}></lightning-combobox>
+                                            </template>
+                                            <template if:true={field.isMultiPicklist}>
+                                                <lightning-dual-listbox label={field.label} source-label="Available" selected-label="Selected" options={field.picklistOptions} value={field.multiVal} required={field.required} disabled={field.isDisabled} data-obj={field.objectApiName} data-fld={field.apiName} onchange={onMultiPicklist}></lightning-dual-listbox>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+
+                        </lightning-accordion-section>
+                    </template>
+                </lightning-accordion>
+            </div>
+
+            <!-- Footer -->
+            <div style="display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px;padding:10px 16px;background:#ffffff;border-top:1px solid #dddbda;flex-shrink:0;">
+                <template if:false={isFirstPage}>
+                    <lightning-button label="Back"   variant="neutral" onclick={onBack}></lightning-button>
+                </template>
+                <template if:false={isLastPage}>
+                    <lightning-button label="Next"   variant="brand"   onclick={onNext}></lightning-button>
+                </template>
+                <template if:true={isLastPage}>
+                    <lightning-button label="Submit" variant="brand"   disabled={isSaving} onclick={onSubmit}></lightning-button>
+                </template>
+            </div>
+
+        </template>
+    </div>
+</template>
