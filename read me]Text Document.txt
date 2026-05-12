@@ -1,0 +1,4 @@
+keep Open the Accordian while navigating back and forth.
+		when the subtab is opened in console, the background color of LWC is blue, but white is expected as LWC background is white
+		After submit is clicked on the form at final page, the subtab must close and the user should get the pop up - currently pop is getting, but the the subtab is not closing.
+		
