@@ -1,0 +1,274 @@
+/* underwritingFlow.css */
+
+.uw-root,
+.uw-body {
+    background: #ffffff !important;
+     padding-top: 12px;
+}
+
+
+
+
+.uw-container {
+    background: #ffffff;      /* ✅ ACTUAL white box */
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* Force accordion content white */
+.uw-body lightning-accordion,
+.uw-body lightning-accordion-section,
+.uw-body .slds-accordion,
+.uw-body .slds-accordion__section,
+.uw-body .slds-accordion__content {
+    background: #ffffff !important;
+}
+
+/* Your field grid currently has no background */
+.uw-body .slds-grid {
+    background: #ffffff !important;
+}
+
+/* ── Chevron nav ─────────────────────────────────────────── */
+.uw-nav-bar {
+    background: #ffffff;
+    border-bottom: 1px solid #dddbda;
+    padding: 10px 12px;
+    margin-bottom: 10px;  
+}
+
+
+/* ── State screens ───────────────────────────────────────── */
+.uw-state-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+.uw-state-msg      { color: #706e6b; font-size: 0.875rem; margin: 0; }
+.uw-state--success { color: #04844b; }
+
+/* ── Scrollable body ─────────────────────────────────────── */
+.uw-body {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 1rem;
+}
+
+/* ── Accordion ───────────────────────────────────────────── */
+.uw-acc-section {
+    --sds-c-accordion-summary-color-background:       #f4f6f9;
+    --sds-c-accordion-summary-color-background-hover: #eaf0f8;
+    --sds-c-accordion-heading-text-color:             #16325c;
+    --sds-c-accordion-sizing-border:                  1px solid #dddbda;
+    --sds-c-accordion-radius-border:                  0.25rem;
+    --sds-c-accordion-summary-font-weight:            700;
+}
+
+/* ── Empty message ───────────────────────────────────────── */
+.uw-empty-msg {
+    color: #706e6b;
+    font-size: 0.875rem;
+    font-style: italic;
+    margin: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   LOADING SKELETON
+   Shows a branded skeleton while Apex loads instead of
+   a plain spinner floating in a white box.
+══════════════════════════════════════════════════════════ */
+.uw-loading-wrap {
+    padding: 1.25rem 1.25rem 2rem;
+    flex: 1;
+}
+
+/* Header row: icon + title + inline spinner */
+.uw-loading-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #ffffff;
+    border: 1px solid #dddbda;
+    border-radius: 6px;
+    padding: 0.875rem 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.uw-loading-icon {
+    flex-shrink: 0;
+}
+
+.uw-loading-title-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.uw-loading-title {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: #16325c;
+}
+
+.uw-loading-sub {
+    font-size: 0.75rem;
+    color: #706e6b;
+}
+
+.uw-inline-spinner {
+    flex-shrink: 0;
+    position: relative;
+    height: 2rem;
+    width: 2rem;
+}
+
+/* Skeleton card list */
+.uw-skeleton-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.uw-skeleton-card {
+    background: #ffffff;
+    border: 1px solid #dddbda;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.uw-skeleton-card-header {
+    background: #f4f6f9;
+    border-bottom: 1px solid #dddbda;
+    padding: 0.625rem 1rem;
+}
+
+.uw-skeleton-card-body {
+    padding: 0.875rem 1rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.uw-skel-row {
+    display: flex;
+    gap: 1rem;
+}
+
+/* Base shimmer bar */
+.uw-skel {
+    border-radius: 4px;
+    background: linear-gradient(90deg, #e8e8e8 25%, #f5f5f5 50%, #e8e8e8 75%);
+    background-size: 200% 100%;
+    animation: uw-shimmer 1.4s infinite ease-in-out;
+}
+
+/* Title bar in header */
+.uw-skel--title {
+    height: 12px;
+    width: 45%;
+}
+.uw-skel--med   { width: 30%; }
+.uw-skel--long  { width: 60%; }
+
+/* Field bars in body */
+.uw-skel--field {
+    flex: 1;
+    height: 36px;
+    border-radius: 4px;
+}
+.uw-skel--short { flex: 0.6; }
+
+@keyframes uw-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+:host {
+    display: block;
+    background: #ffffff !important;
+    min-height: 100vh;
+}
+
+
+/* ── Custom chevron tab bar ──────────────────────────────── */
+
+
+.uw-tab-wrapper,
+.uw-tab-bar,
+.uw-tab,
+.uw-tab-active {
+    /* clear out old rules */
+    all: unset;
+}
+
+.slds-path {
+    margin-bottom: 1rem;
+}
+
+
+.uw-loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.uw-loader-card {
+    text-align: center;
+    padding: 24px 32px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    min-width: 260px;
+}
+
+.uw-loader-text {
+    margin-top: 12px;
+}
+
+.uw-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #16325c;
+}
+
+.uw-sub {
+    font-size: 13px;
+    color: #6b6d70;
+}
+
+/* Progress bar */
+.uw-progress {
+    margin-top: 16px;
+    height: 4px;
+    background: #e0e5ee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.uw-progress-bar {
+    width: 40%;
+    height: 100%;
+    background: #0176d3;
+    animation: loadingBar 1.5s infinite ease-in-out;
+}
+
+@keyframes loadingBar {
+    0% { margin-left: -40%; }
+    50% { margin-left: 50%; }
+    100% { margin-left: 100%; }
+}
